@@ -1,10 +1,8 @@
 import cors from 'cors';
-import server from './server';
+import server, { PORT } from './server';
 import { ApolloServer } from 'apollo-server-express';
-import { typeDefs } from './schema';
+import { typeDefs } from './schema/generalSchema';
 import { mocks } from './mocks';
-
-const PORT = 4000;
 
 server.use(cors());
 
