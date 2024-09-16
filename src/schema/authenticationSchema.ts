@@ -2,11 +2,6 @@ import { gql } from 'apollo-server-express';
 
 export const authenticationSchema = gql`
     ##################
-    # Enum Types
-    ##################
-
-
-    ##################
     # Object Types
     ##################
 
@@ -95,14 +90,6 @@ export const authenticationSchema = gql`
     }
 
     ##################
-    # Queries
-    ##################
-
-    type Query {
-        users: [User]!
-    }
-
-    ##################
     # Mutations
     ##################
 
@@ -185,10 +172,10 @@ SignUpResponse: () => ({
     errorMessage: () => null, 
 }),
 
-    // SignUpResponseWithError: () => ({
-    //   user: () => null, 
-    //   errorMessage: () => 'The email address is already in use.', 
-    // }),
+// SignUpResponseWithError: () => ({
+//   user: () => null, 
+//   errorMessage: () => 'The email address is already in use.', 
+// }),
 
     SignInResponse: () => ({
     user: () => ({
@@ -225,10 +212,5 @@ SignUpResponse: () => ({
         forgotPassword: () => ({}),
         resetPassword: () => ({}),
         newPassword: () => ({}),
-    }),
-
-    // Mock data for Queries
-    Query: () => ({
-        users: () => [...new Array(10)],
     }),
 };

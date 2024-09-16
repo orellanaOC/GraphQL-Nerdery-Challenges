@@ -42,3 +42,24 @@ export const orderSchema = gql`
     # type Mutation {
     # }
 `;
+
+export const orderMocks = {
+    // Mock data for Types
+
+
+    // Mock data for Inputs
+
+
+    // Mock data for Responses
+
+
+    // Mock data for Mutations
+    Mutation: () => ({
+        
+    }),
+
+    // Mock data for Queries
+    Query: () => ({
+        
+    }),
+};
