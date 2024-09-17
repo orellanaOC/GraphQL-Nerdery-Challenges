@@ -149,10 +149,26 @@ export const productSchema = gql`
         errorMessage: String
     }
 
+    """
+    Pagination metadata for paginated results.
+    """
     type PaginationResponse {
+        """
+        Current page number.
+        """
         page: Int!
+        """
+        Limit of items per page.
+        """
         limit: Int!
-        total: Int!
+        """
+        Total number of items.
+        """
+        totalItems: Int!
+        """
+        Total number of pages.
+        """
+        totalPages: Int!
     }
 
     type ProductResponse {
@@ -274,7 +290,8 @@ export const productMocks = {
     PaginationResponse: () => ({
         page: 2,
         limit: 2,
-        total: 20,
+        totalItems: 60,
+        totalPages: 20,
     }),
 
     ProductsListResponse: () => ({

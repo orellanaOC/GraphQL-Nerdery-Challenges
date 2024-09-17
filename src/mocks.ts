@@ -6,6 +6,6 @@ import { productMocks } from './schema/productSchema';
 export const mocks = {
   ...authenticationMocks,
   ...cartMocks,
-  // ...orderMocks,
+  ...orderMocks,
   ...productMocks,
 };
