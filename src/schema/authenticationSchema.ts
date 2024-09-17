@@ -26,34 +26,6 @@ export const authenticationSchema = gql`
     }
 
     ##################
-    # Input Types
-    ##################
-
-    input SignUpInput {
-        name: String!
-        email: String!
-        password: String!
-    }
-
-    input SignInInput {
-        email: String!
-        password: String!
-    }
-
-    input ForgotPasswordInput {
-        email: String!
-    }
-
-    input NewPasswordInput {
-        newPassword: String!
-    }
-
-    input ResetPasswordInput {
-        currentPassword: String!
-        newPassword: String!
-    }
-
-    ##################
     # Response Types
     ##################
 
@@ -95,22 +67,22 @@ export const authenticationSchema = gql`
 
     type Mutation {
         "Sign Up (creates user and shopping cart)"
-        signUp(input: SignUpInput!): SignUpResponse!
+        signUp(name: String!, email: String!, password: String!): SignUpResponse!
 
         "Sign In (authenticates a user and returns a session token)"
-        signIn(input: SignInInput!): SignInResponse!  
+        signIn(email: String!, password: String!): SignInResponse!  
 
         "Sign Out (invalidates the current user session based on the token provided in headers)"
         signOut: AuthResponse!           
 
         "Forgot Password (sends instructions to reset the password for the specified email)"
-        forgotPassword(input: ForgotPasswordInput!): ForgotPasswordResponse!  
+        forgotPassword(email: String!): ForgotPasswordResponse!  
 
         "Reset Password (resets the user's password using the reset token)"
-        resetPassword(input: ResetPasswordInput!): AuthResponse!    
+        resetPassword(currentPassword: String!, newPassword: String!): AuthResponse!    
 
         "New Password (allows a logged-in user to set a new password)"
-        newPassword(input: NewPasswordInput!): AuthResponse!     
+        newPassword(newPassword: String!): AuthResponse!     
     }
 `;
 
