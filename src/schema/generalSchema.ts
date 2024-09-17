@@ -6,7 +6,7 @@ import { productSchema } from './productSchema';
 
 export const typeDefs = mergeTypeDefs([
     authenticationSchema, 
-    /*cartSchema,*/ 
+    cartSchema,
     orderSchema, 
     productSchema,
 ]);
