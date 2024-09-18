@@ -63,6 +63,23 @@ export const productSchema = gql`
         createdAt: String
     }
 
+    type ProductEdge {
+        cursor: String!
+        node: Product!
+    }
+
+    type ProductConnection {
+        edges: [ProductEdge!]!
+        pageInfo: PageInfo!
+    }
+
+    type PageInfo {
+        endCursor: String
+        startCursor: String
+        hasNextPage: Boolean!
+        hasPreviousPage: Boolean!
+    }
+
     ##################
     # Input Types
     ##################
@@ -73,13 +90,16 @@ export const productSchema = gql`
         name: String!
     }
 
+    input PaginationInput {
+        first: Int
+        after: String
+        last: Int
+        before: String
+    }
+
     input ProductFilterInput { 
-        "Page number for pagination (e.g., 1)"
-        page: Int!
-        "Number of products per page (e.g., 10)"
-        limit: Int!
-        "Optional filter for the category"
         category: CategoryInput
+        pagination: PaginationInput
     }
 
     input ProductInput {
@@ -140,15 +160,6 @@ export const productSchema = gql`
     ##################
     # Response Types
     ##################
-    type ProductsListResponse {
-        "Contains pagination details"
-        pagination: PaginationResponse
-        "List of products returned by the query"
-        data: [Product]
-        "User-friendly error message if applicable (e.g., ~ No products found)"
-        errorMessage: String
-    }
-
     """
     Pagination metadata for paginated results.
     """
@@ -188,8 +199,8 @@ export const productSchema = gql`
     # Queries
     ##################
     type Query {
-        products(filter: ProductFilterInput!): ProductsListResponse!
-        product(identifier: Int!): Product!
+        products(filter: ProductFilterInput!): ProductConnection!
+        product(id: ID!): Product!
     }
 
     ##################
@@ -199,8 +210,8 @@ export const productSchema = gql`
     type Mutation {
         createProduct(product: ProductInput!): ProductResponse!
         updateProduct(product: ProductToUpdateInput!): Product!
-        deleteProduct(id: Int!): AuthResponse!
-        likeProduct(id: Int!): LikeResponse!
+        deleteProduct(id: ID!): AuthResponse!
+        likeProduct(id: ID!): LikeResponse!
         uploadProductImages(input: UploadImageInput!): Product!
     }
 `;
@@ -287,17 +298,26 @@ export const productMocks = {
     }),
 
     // Mock data for Responses
-    PaginationResponse: () => ({
-        page: 2,
-        limit: 2,
-        totalItems: 60,
-        totalPages: 20,
+    ProductEdge: () => ({
+        cursor: () => 'cursor-123',
+        node: () => {},
     }),
 
-    ProductsListResponse: () => ({
-        pagination: () => {},
-        data: [...new Array(6)],
-        errorMessage: () => null,
+    ProductConnection: () => ({
+        edges: [...new Array(5)],
+        pageInfo: () => ({
+            endCursor: 'cursor-5',
+            startCursor: 'cursor-1',
+            hasNextPage: true,
+            hasPreviousPage: false,
+        }),
+    }),
+
+    PageInfo: () => ({
+        endCursor: 'cursor-5',
+        startCursor: 'cursor-1',
+        hasNextPage: true,
+        hasPreviousPage: false,
     }),
 
     ProductResponse: () => ({

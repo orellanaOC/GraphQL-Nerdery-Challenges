@@ -10,10 +10,8 @@ export const cartSchema = gql`
     type ShoppingCartLine {
         "The unique identifier of the shopping cart line."
         id: ID!
-
         "The quantity of the product in the cart."
         productQuantity: Int!
-
         "The product associated with this line in the cart."
         product: Product!
     }

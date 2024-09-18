@@ -15,7 +15,7 @@ export const authenticationSchema = gql`
         "Email address of the user, used for login and communication."
         email: String!
         "The shopping cart ID associated with the user, containing the products they are interested in purchasing."
-        shoppingCartId: Int!
+        shoppingCartId: ID!
     }
 
     type Role {

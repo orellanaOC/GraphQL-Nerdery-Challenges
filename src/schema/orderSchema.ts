@@ -72,25 +72,36 @@ export const orderSchema = gql`
         createdAt: String!
     }
 
+    type OrderEdge {
+        cursor: String!
+        node: Order!
+    }
+
+    type OrderConnection {
+        edges: [OrderEdge!]!
+        pageInfo: PageInfo!
+    }
+
+    type PageInfo {
+        endCursor: String
+        startCursor: String
+        hasNextPage: Boolean!
+        hasPreviousPage: Boolean!
+    }
+
     ##################
     # Input Types
     ##################
-    """
-    Input type for filtering orders by status and pagination.
-    """
+    input PaginationInput {
+        first: Int
+        after: String
+        last: Int
+        before: String
+    }
+
     input OrderFilter {
-        """
-        Filter orders by their current status.
-        """
         status: OrderStatus
-        """
-        The page number for pagination.
-        """
-        page: Int!
-        """
-        The number of items per page.
-        """
-        limit: Int!
+        pagination: PaginationInput
     }
 
     ##################
@@ -101,19 +112,6 @@ export const orderSchema = gql`
     """
     type OrderResponse {
         order: Order
-        "User-friendly error message if applicable"
-        errorMessage: String
-    }
-
-    type OrderListResponse {
-        """
-        Pagination metadata for the order list.
-        """
-        pagination: PaginationResponse
-        """
-        The list of orders that match the filter criteria.
-        """
-        data: [Order]
         "User-friendly error message if applicable"
         errorMessage: String
     }
@@ -130,11 +128,11 @@ export const orderSchema = gql`
         Get all orders with optional filtering by status.
         Managers can access all orders, while clients can only access their own orders.
         """
-        orders(filter: OrderFilter!): OrderListResponse!
+        orders(filter: OrderFilter!): OrderConnection!
         """
         Retrieve details of a specific order by its unique identifier.
         """
-        order(id: Int!): OrderResponse!
+        order(id: ID!): OrderResponse!
     }
 
     ##################
@@ -170,10 +168,26 @@ export const orderMocks = {
     }),
 
     // Mock data for Responses
-    OrderListResponse: () => ({
-        pagination: () => {},
-        data: [...new Array(2)],
-        errorMessage: () => null,
+    OrderEdge: () => ({
+        cursor: 'cursor-123',
+        node: {},
+    }),
+
+    OrderConnection: () => ({
+        edges: [...new Array(2)],
+        pageInfo: {
+            endCursor: 'cursor-123',
+            startCursor: 'cursor-122',
+            hasNextPage: true,
+            hasPreviousPage: false,
+        },
+    }),
+
+    PageInfo: () => ({
+        endCursor: 'cursor-123',
+        startCursor: 'cursor-122',
+        hasNextPage: true,
+        hasPreviousPage: false,
     }),
 
     OrderResponse: () => ({
@@ -190,6 +204,5 @@ export const orderMocks = {
     Query: () => ({
         order: () => {},
         orders: () => {},
-        myOrders: () => {},
     }),
 };
